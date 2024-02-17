@@ -1,7 +1,11 @@
-﻿# Welcome to my Python youtube downloader!
+
+# Welcome to my Python youtube downloader!
 This is my first app made in Python so yeah, don't expect it to do a **backflip** or something :) .
 
-### Supported OS
+# Disclaimer
+**This app is not a virus**, windows detects it as a virus because **it creates a .exe file in the temp folder**. That file is **ffmpeg.exe**, which **i use to convert and merge mp3 and mp4 files**. You can search ffmpeg on google to see yourself that it is not a virus. 
+
+## Supported OS
 - Windows
 - Just windows, i haven't tried it on other OS
 
@@ -16,7 +20,7 @@ It takes a **link** for a **YouTube video/playlist**, if it is a video, it takes
 >If you are a programmer, you can look at the code, really simple, no virus or anything. Tried my best :)
 >May improve later.
 
-# Want to change something? ( for programmers )
+# Want to test and contribute? ( for programmers )
 Download the .py , the ffmpeg.exe and the sanki.ico files, put them together in a folder, download the needed libraries for python and you're good to go.
 > Libraries used:
 > - win10toast
