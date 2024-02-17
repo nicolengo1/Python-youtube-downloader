@@ -11,7 +11,7 @@ This is my first app made in Python so yeah, don't expect it to do a **backflip*
 
 # How to use it
 
-First, download the **desired .exe** in the **releases section**( in the **right** of your scren ), click the desirec exe title, then down there, in Assets, click on the exe file, and then just run it ( your windows **may detect** it as a **virus** because it is a **python script, but don't worry, it is safe**, on god ) . A cmd will open and **instructions will be given** on how to use it. Really simple.
+First, download the **desired .exe** in the **releases section** ( in the **right** of your scren ), click on the desired **downloader ** title, then down there, in **Assets**, click on the **exe file**, and then just run it ( your windows **may detect** it as a **virus** because it is a **python script, but don't worry, it is safe**, on god ) . A cmd will open and **instructions will be given** on how to use it. Really simple.
 
 ## How does it work
 
