@@ -11,7 +11,7 @@ This is my first app made in Python so yeah, don't expect it to do a **backflip*
 
 ## Suported videos
 - Up to 2k for now
-- Should work on almost everything, even shorts
+- Should work on almost everything, even shorts and playlists
 
 # How to use it
 
