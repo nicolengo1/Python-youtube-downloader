@@ -1,5 +1,4 @@
 import os
-import subprocess
 import sys
 import time
 
@@ -34,7 +33,7 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
     try:
         Skip_file_verification_temp = \
-            int(input("Do you want to check before downloading if the audio exists in the folder ? "
+            int(input("Do you want to check before downloading if the audio was downloaded and it is in the folder ? "
                       "( 0  for no, 1 for yes ) -> "))
         if Skip_file_verification_temp not in [0, 1]:
             Skip_file_verification_temp = 0
@@ -75,7 +74,7 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
                              "The log verification checks if in the txt file exists the audio title\n"
                              "The log writing appends in the txt file the audio title\n"
                              "For the changes to take action a restart of the app is needed,\n"
-                             " also the txt file needs to be saved")
+                             "also the txt file needs to be saved")
 
     print("Settings file created!", end="\n\n")
 
@@ -223,9 +222,10 @@ def DownloadMP3FromYouTube(video_url, folder_name="random"):
     the "DOWNLOAD_DIR" path.
     :return:
     """
-    audio_video_youtube = YouTube(
-        video_url).streams.filter(
-        progressive=False).filter(only_audio=True).get_audio_only()
+    # audio_video_youtube = YouTube(
+    #     video_url).streams.filter(
+    #     progressive=False).filter(only_audio=True).get_audio_only()
+    audio_video_youtube = YouTube(video_url).streams.filter().filter(only_audio=True).first()
 
     if audio_video_youtube is not None:
         audio_title = ReplaceTitle(audio_video_youtube.title)
@@ -254,14 +254,14 @@ def DownloadMP3FromYouTube(video_url, folder_name="random"):
 
         download_log.close()
 
-        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp4")
+        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp3")
 
-        subprocess.call([f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4",
-                         f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT)
-
-        os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
+        # subprocess.call([f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4",
+        #                  f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
+        #                 stdout=subprocess.DEVNULL,
+        #                 stderr=subprocess.STDOUT)
+        #
+        # os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
 
         if not_in_log == 1 and SKIP_LOG_WRITING == 0:
             download_log = open(DOWNLOAD_DIR_AUDIO_LOG, "a", encoding="UTF-8")

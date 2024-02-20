@@ -30,7 +30,7 @@ if not os.path.exists(f"{absolute_path}\\settingsmp4.txt"):
 
     try:
         Skip_file_verification_temp = \
-            int(input("Do you want to check before downloading if the video exists in the folder ? "
+            int(input("Do you want to check before downloading if the video was downloaded and it is in the folder ? "
                       "( 0  for no, 1 for yes ) -> "))
         if Skip_file_verification_temp not in [0, 1]:
             Skip_file_verification_temp = 0
