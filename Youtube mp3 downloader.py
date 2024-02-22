@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 import time
 
@@ -222,10 +223,10 @@ def DownloadMP3FromYouTube(video_url, folder_name="random"):
     the "DOWNLOAD_DIR" path.
     :return:
     """
-    # audio_video_youtube = YouTube(
-    #     video_url).streams.filter(
-    #     progressive=False).filter(only_audio=True).get_audio_only()
-    audio_video_youtube = YouTube(video_url).streams.filter().filter(only_audio=True).first()
+    audio_video_youtube = YouTube(
+        video_url).streams.filter(
+        progressive=False).filter(only_audio=True).get_audio_only()
+    # audio_video_youtube = YouTube(video_url).streams.filter().filter(only_audio=True).first()
 
     if audio_video_youtube is not None:
         audio_title = ReplaceTitle(audio_video_youtube.title)
@@ -254,14 +255,14 @@ def DownloadMP3FromYouTube(video_url, folder_name="random"):
 
         download_log.close()
 
-        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp3")
+        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp4")
 
-        # subprocess.call([f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4",
-        #                  f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
-        #                 stdout=subprocess.DEVNULL,
-        #                 stderr=subprocess.STDOUT)
-        #
-        # os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
+        subprocess.call([f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4",
+                         f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.STDOUT)
+
+        os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
 
         if not_in_log == 1 and SKIP_LOG_WRITING == 0:
             download_log = open(DOWNLOAD_DIR_AUDIO_LOG, "a", encoding="UTF-8")
