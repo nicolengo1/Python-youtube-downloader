@@ -21,6 +21,10 @@ print("Welcome!", end="\n\n")
 
 time.sleep(1)
 
+print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
+
+time.sleep(2)
+
 if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
     Download_directory_temp = \
