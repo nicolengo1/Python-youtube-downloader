@@ -270,8 +270,8 @@ def DownloadMP4FromYouTube(video_url, folder_name="random"):
 
         subprocess.call([f"{ffmpeg_path}", "-y", "-i",
                          f"{DOWNLOAD_DIR}\\mp4\\{folder_name}\\{audio_title}_temp.mp4", "-i",
-                         f"{DOWNLOAD_DIR}\\mp4\\{folder_name}\\{audio_title}_temp.mp3", "-c", "copy",
-                         f"{DOWNLOAD_DIR}\\mp4\\{folder_name}\\{audio_title}.mp4"],
+                         f"{DOWNLOAD_DIR}\\mp4\\{folder_name}\\{audio_title}_temp.mp3", "-c", "copy", "-c:a",
+                         "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp4\\{folder_name}\\{audio_title}.mp4"],
                         stdout=subprocess.DEVNULL,
                         stderr=subprocess.STDOUT)
 
