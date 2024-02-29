@@ -15,7 +15,7 @@ This is my first app made in Python so yeah, don't expect it to do a **backflip*
 
 # How to use it
 
-First, download the **desired .exe** in the **releases section** ( in the **right** of your scren ( **scroll up a bit** ), click on the desired **downloader** title, then down there, in **Assets**, click on the **exe file**, and then just run it ( your windows **may detect** it as a **virus** because it is a **python script, but don't worry, it is safe**, on god ) . A cmd will open and **instructions will be given** on how to use it. Really simple.
+First, download the **desired .exe** in the **releases section** ( in the **right** of your scren ( **scroll up a bit** ), click on the latest versiot, then down there, in **Assets**, click on the desired **exe file**, and then just run it ( your windows **may detect** it as a **virus** because it is a **python script, but don't worry, it is safe**, on god ) . A cmd will open and **instructions will be given** on how to use it. Really simple.
 
 ## How does it work
 
@@ -27,13 +27,3 @@ The **verification process** and the **download folder path** can be **modified*
 
 >If you are a programmer, you can look at the code, really simple, no virus or anything. Tried my best :)
 >May improve later.
-
-# Want to test and contribute? ( for programmers )
-Download the .py , the ffmpeg.exe and the sanki.ico files, put them together in a folder, download the needed libraries for python and you're good to go.
-> Libraries used:
-> - win10toast
-> - pytube
-> - time
-> - sys
-> - subprocess
-> - os
