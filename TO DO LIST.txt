@@ -1,0 +1,6 @@
+TO DO LIST
+
+subir o bajar el volumen dependiendo de una variable si el usuario quiere
+cambiar el bitrate si el usuario quiere
+
+GUI
