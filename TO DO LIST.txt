@@ -1,0 +1,7 @@
+TO DO LIST
+
+Increase or lower the volume if the user wants
+Change Audio bitrate if the user wants
+Change Video quality if the user wants
+
+GUI 🤡
