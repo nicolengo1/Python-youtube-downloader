@@ -3,8 +3,11 @@ import subprocess
 import sys
 import time
 
+from github import Github
 from pytube import YouTube, Playlist
 from win10toast import ToastNotifier
+
+VERSION = "v1.1.0"
 
 toaster = ToastNotifier()
 
@@ -23,7 +26,16 @@ time.sleep(1)
 
 print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
 
-time.sleep(2)
+try:
+    latest_version = Github("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"). \
+        get_repo("nicolengo1/Python-youtube-downloader").get_latest_release().title
+    if latest_version != VERSION:
+        print("New version detected, go to my github and maybe download it :) !")
+        print(f"Actual version = {VERSION}   Latest version = {latest_version}", end="\n\n")
+except Exception:
+    print("An error occured when trying to check for newer versions - ignore")
+
+time.sleep(1)
 
 if not os.path.exists(f"{absolute_path}\\settingsmp4.txt"):
 

@@ -3,8 +3,11 @@ import subprocess
 import sys
 import time
 
+from github import Github
 from pytube import YouTube, Playlist
 from win10toast import ToastNotifier
+
+VERSION = "v1.1.0"
 
 toaster = ToastNotifier()
 
@@ -23,7 +26,16 @@ time.sleep(1)
 
 print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
 
-time.sleep(2)
+try:
+    latest_version = Github("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"). \
+        get_repo("nicolengo1/Python-youtube-downloader").get_latest_release().title
+    if latest_version != VERSION:
+        print("New version detected, go to my github and maybe download it :) !")
+        print(f"Actual version = {VERSION}   Latest version = {latest_version}", end="\n\n")
+except Exception:
+    print("An error occured when trying to check for newer versions - ignore")
+
+time.sleep(1)
 
 if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
@@ -218,11 +230,12 @@ def SuccessfulNotification():
         pass
 
 
-def DownloadMP3FromYouTube(video_url, folder_name="random"):
+def DownloadMP3FromYouTube(video_url, folder_name="random", modify_volume=0):
     """
     Downloads the highest mp3 quality file from a YouTube video link and puts it in a "folder_name" folder.
     :param video_url: The YouTube video url.
     :param folder_name: The folder in which the audio will be downloaded ( if it's a single audio, the folder will
+    :param modify_volume: increase or lower the volume in DB
     be named "random", if it's a playlist, the folder will be named the playlist title ). The folder will be created in
     the "DOWNLOAD_DIR" path.
     :return:
@@ -261,10 +274,13 @@ def DownloadMP3FromYouTube(video_url, folder_name="random"):
 
         audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp4")
 
-        subprocess.call([f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4", "-c:a",
-                         "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT)
+        subprocess.call(
+            [f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4", "-filter:a",
+             f"volume={modify_volume}dB", "-c:a",
+             "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"]
+            )
+        # stdout = subprocess.DEVNULL,
+        # stderr = subprocess.STDOUT
 
         os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
 
