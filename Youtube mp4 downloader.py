@@ -33,7 +33,7 @@ try:
         print("New version detected, go to my github and maybe download it :) !")
         print(f"Actual version = {VERSION}   Latest version = {latest_version}", end="\n\n")
 except Exception as error:
-    print(f"An error occured when trying to check for newer versions - {error}")
+    print(f"An error occured when trying to check for newer versions - ignore")
 
 time.sleep(1)
 
