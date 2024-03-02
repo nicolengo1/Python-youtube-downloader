@@ -7,7 +7,7 @@ from github import Github
 from pytube import YouTube, Playlist
 from win10toast import ToastNotifier
 
-VERSION = "v1.1.0"
+VERSION = "v1.1.2"
 
 toaster = ToastNotifier()
 
@@ -27,7 +27,7 @@ time.sleep(1)
 print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
 
 try:
-    latest_version = Github("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"). \
+    latest_version = Github("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"). \
         get_repo("nicolengo1/Python-youtube-downloader").get_latest_release().title
     if latest_version != VERSION:
         print("New version detected, go to my github and maybe download it :) !")
@@ -277,10 +277,10 @@ def DownloadMP3FromYouTube(video_url, folder_name="random", modify_volume=0):
         subprocess.call(
             [f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4", "-filter:a",
              f"volume={modify_volume}dB", "-c:a",
-             "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"]
-            )
-        # stdout = subprocess.DEVNULL,
-        # stderr = subprocess.STDOUT
+             "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT
+        )
 
         os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
 

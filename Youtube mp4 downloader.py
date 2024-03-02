@@ -7,7 +7,7 @@ from github import Github
 from pytube import YouTube, Playlist
 from win10toast import ToastNotifier
 
-VERSION = "v1.1.0"
+VERSION = "v1.1.2"
 
 toaster = ToastNotifier()
 
@@ -27,13 +27,13 @@ time.sleep(1)
 print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
 
 try:
-    latest_version = Github("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"). \
+    latest_version = Github("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"). \
         get_repo("nicolengo1/Python-youtube-downloader").get_latest_release().title
     if latest_version != VERSION:
         print("New version detected, go to my github and maybe download it :) !")
         print(f"Actual version = {VERSION}   Latest version = {latest_version}", end="\n\n")
-except Exception:
-    print("An error occured when trying to check for newer versions - ignore")
+except Exception as error:
+    print(f"An error occured when trying to check for newer versions - {error}")
 
 time.sleep(1)
 
