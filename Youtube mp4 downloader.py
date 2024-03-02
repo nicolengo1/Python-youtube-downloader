@@ -7,7 +7,12 @@ from github import Github
 from pytube import YouTube, Playlist
 from win10toast import ToastNotifier
 
-VERSION = "v1.1.2"
+from Variableenviroments import VariableEnviroments
+
+VERSION = VariableEnviroments.VERSION
+GITHUB_TOKEN = VariableEnviroments.GITHUB_TOKEN
+
+# for security purposes :)
 
 toaster = ToastNotifier()
 
@@ -27,7 +32,7 @@ time.sleep(1)
 print("Don't forget to check from time to time my github for updates ;) !", end="\n\n")
 
 try:
-    latest_version = Github("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"). \
+    latest_version = Github(GITHUB_TOKEN). \
         get_repo("nicolengo1/Python-youtube-downloader").get_latest_release().title
     if latest_version != VERSION:
         print("New version detected, go to my github and maybe download it :) !")
@@ -241,12 +246,20 @@ def DownloadMP4FromYouTube(video_url, folder_name="random"):
     the "DOWNLOAD_DIR" path.
     :return:
     """
-    audio_video_youtube = YouTube(
-        video_url).streams.filter(
-        progressive=False).filter(only_audio=True).get_audio_only()
 
-    video_youtube = YouTube(video_url).streams.filter(progressive=False).filter(
-        file_extension='mp4').get_highest_resolution()
+    i = 1
+    while i < 10:
+        try:
+            audio_video_youtube = YouTube(
+                video_url).streams.filter(
+                progressive=False).filter(only_audio=True).get_audio_only()
+
+            video_youtube = YouTube(video_url).streams.filter(progressive=False).filter(
+                file_extension='mp4').get_highest_resolution()
+        except Exception:
+            i = i + 1
+            continue
+        break
 
     if audio_video_youtube is not None:
         audio_title = ReplaceTitle(audio_video_youtube.title)
@@ -347,6 +360,7 @@ while True:
                     playlist_length = len(playlist) - 1
 
                     for i in range(playlist_length, 0, -1):
+
                         try:
                             video_url = playlist[i]
                             DownloadMP4FromYouTube(video_url, playlist_title)
