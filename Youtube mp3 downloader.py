@@ -12,14 +12,17 @@ from Variableenviroments import VariableEnviroments
 VERSION = VariableEnviroments.VERSION
 GITHUB_TOKEN = VariableEnviroments.GITHUB_TOKEN
 
-# for security purposes :)
-
 toaster = ToastNotifier()
 
 if getattr(sys, 'frozen', False):
     absolute_path = os.path.dirname(sys.executable)
     icon_path = os.path.join(sys._MEIPASS, "sanki.ico")
-    ffmpeg_path = os.path.join(sys._MEIPASS, "ffmpeg.exe")
+    ffmpeg_path = os.path.join(absolute_path, "ffmpeg.exe")
+    if not os.path.exists(ffmpeg_path):
+        print("Error - ffmpeg.exe is not found, please re-download from github zip file "
+              "( or put back the ffmpeg.exe file where it was )")
+        time.sleep(7)
+        exit(0)
 elif __file__:
     absolute_path = os.path.dirname(__file__)
     icon_path = "sanki.ico"
@@ -37,7 +40,7 @@ try:
     if latest_version != VERSION:
         print("New version detected, go to my github and maybe download it :) !")
         print(f"Actual version = {VERSION}   Latest version = {latest_version}", end="\n\n")
-except Exception:
+except Exception as error:
     print("An error occured when trying to check for newer versions - ignore")
 
 time.sleep(1)
@@ -45,9 +48,11 @@ time.sleep(1)
 if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
     Download_directory_temp = \
-        input("Where do you want to download the audios ? ( Write the full path, you can paste it. "
-              "If nothing is provided or the directory does not exist,\n"
-              "a folder will be created in the directory where the .exe file is ) - > ")
+        input("Where do you want to download the videos ?\n"
+              "( Write the full path, you can paste it )\n"
+              "(If nothing is provided or the directory does not exist,\n"
+              "a folder will be created in the directory where the .exe file is )\n"
+              " - > ")
     if not os.path.exists(Download_directory_temp):
         Download_directory_temp = os.path.join(absolute_path, "audio")
 
@@ -55,8 +60,10 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
     try:
         Skip_file_verification_temp = \
-            int(input("Do you want to check before downloading if the audio was downloaded and it is in the folder ? "
-                      "( 0  for no, 1 for yes ) -> "))
+            int(input("Do you want to skip checking before downloading if the video was downloaded and it is in the "
+                      "folder ?\n"
+                      "( 0 for no, 1 for yes )\n"
+                      " -> "))
         if Skip_file_verification_temp not in [0, 1]:
             Skip_file_verification_temp = 0
     except Exception:
@@ -66,8 +73,9 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
 
     try:
         Skip_log_verification_temp = \
-            int(input("Do you want to check before downloading if the audio exists in the txt file log ? "
-                      "( 0  for no, 1 for yes ) -> "))
+            int(input("Do you want to skip checking before downloading if the video exists in the txt file log ?\n"
+                      "( 0 for no, 1 for yes )\n"
+                      " -> "))
         if Skip_log_verification_temp not in [0, 1]:
             Skip_log_verification_temp = 0
     except Exception:
@@ -76,12 +84,25 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
     os.system('cls')
 
     try:
-        Skip_log_writing_temp = int(input("Do you want to skip writing in the txt log ? "
-                                          "( 0  for no, 1 for yes ) -> "))
+        Skip_log_writing_temp = int(input("Do you want to skip writing in the txt log ?\n"
+                                          "( 0 for no, 1 for yes )\n"
+                                          " -> "))
         if Skip_log_writing_temp not in [0, 1]:
             Skip_log_writing_temp = 0
     except Exception:
         Skip_log_writing_temp = 0
+
+    os.system('cls')
+
+    try:
+        Audio_bitrate_temp = int(input("What bitrate do you want the audio to be ?\n"
+                                       "( higher - better audio quality but consumes more memory )\n"
+                                       "( write a number starting from 35 to 256, 128 is recommended and default )\n"
+                                       " -> "))
+        if Audio_bitrate_temp < 35 or Audio_bitrate_temp > 256:
+            Audio_bitrate_temp = 128
+    except Exception:
+        Audio_bitrate_temp = 128
 
     os.system('cls')
 
@@ -90,13 +111,16 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
                              f"Skip_file_verification = {Skip_file_verification_temp}\n"
                              f"Skip_log_verification = {Skip_log_verification_temp}\n"
                              f"Skip_log_writing = {Skip_log_writing_temp}\n"
+                             f"Audio_bitrate = {Audio_bitrate_temp}\n\n"
                              "Download directory = copy the full path for a folder where to download\n"
                              "Skip_... = 0 for don't skip and 1 for skip\n"
-                             "The file verification checks if the audio exists in the folder\n"
-                             "The log verification checks if in the txt file exists the audio title\n"
-                             "The log writing appends in the txt file the audio title\n"
-                             "For the changes to take action a restart of the app is needed,\n"
-                             "also the txt file needs to be saved")
+                             "The file verification checks if the video exists in the folder\n\n"
+                             "The log verification checks if in the txt file exists the video title\n\n"
+                             "The log writing appends in the txt file the video title\n\n"
+                             "The audio bitrate is a value between 35 and 256 - 128 recomended;\n "
+                             "the higher the better the audio quality will be but it will take more memory\n\n"
+                             "For the changes to take action a restart of the app is needed\n"
+                             "and the txt file needs to be saved")
 
     print("Settings file created!", end="\n\n")
 
@@ -107,10 +131,12 @@ if not os.path.exists(f"{absolute_path}\\settingsmp3.txt"):
     SKIP_FILE_VERIFICATION = Skip_file_verification_temp
     SKIP_LOG_VERIFICATION = Skip_log_verification_temp
     SKIP_LOG_WRITING = Skip_log_writing_temp
+    AUDIO_BITRATE = f"{Audio_bitrate_temp}k"
 
     settings_file.close()
 else:
     settings_file = open(f"{absolute_path}\\settingsmp3.txt", "r")
+
     try:
         DOWNLOAD_DIR = settings_file.readline()
 
@@ -122,10 +148,10 @@ else:
             if DOWNLOAD_DIR == "None" or DOWNLOAD_DIR is None or not os.path.exists(DOWNLOAD_DIR):
                 raise Exception("Download directory does not exist or isn't valid!")
         else:
-            raise Exception("Download directory does not exist or isn't valid!")
+            raise Exception("Download directory does not exist, isn't valid or isn't specified!")
 
     except Exception as error:
-        print(f"Error - {error}")
+        print(f"Error with Download directory - {error} - defaulted to the .exe location")
         DOWNLOAD_DIR = os.path.join(absolute_path, "audio")
 
     try:
@@ -143,7 +169,7 @@ else:
         else:
             raise Exception("Skip file verification is not specified!")
     except Exception as error:
-        print(f"Error - {error}")
+        print(f"Error with Skip file verification value - {error} - defaulted to 0")
         SKIP_FILE_VERIFICATION = 0
 
     try:
@@ -162,7 +188,7 @@ else:
             raise Exception("Skip log verification is not not specified!")
 
     except Exception as error:
-        print(f"Error - {error}")
+        print(f"Error with Skip log verification value - {error} - defaulted to 0")
         SKIP_LOG_VERIFICATION = 0
 
     try:
@@ -180,8 +206,28 @@ else:
             raise Exception("Skip log verification is not not specified!")
 
     except Exception as error:
-        print(f"Error - {error}")
+        print(f"Error with Skip log writing value - {error} - defaulted to 0")
         SKIP_LOG_WRITING = 0
+
+    try:
+        AUDIO_BITRATE = settings_file.readline()
+        if AUDIO_BITRATE is not None and AUDIO_BITRATE != '' and AUDIO_BITRATE != '\n':
+            if AUDIO_BITRATE[len(AUDIO_BITRATE) - 1] == '\n':
+                AUDIO_BITRATE = AUDIO_BITRATE[:-1]
+            AUDIO_BITRATE = AUDIO_BITRATE[16:]
+
+            AUDIO_BITRATE = int(AUDIO_BITRATE)
+
+            if AUDIO_BITRATE < 35 or AUDIO_BITRATE > 256:
+                raise Exception("Audio bitrate is not between 35 and 256!")
+
+            AUDIO_BITRATE = f"{AUDIO_BITRATE}k"
+        else:
+            raise Exception("Audio bitrate is not specified!")
+
+    except Exception as error:
+        print(f"Error with Audio bitrat value - {error} - defaulted to 128")
+        AUDIO_BITRATE = "128k"
 
     settings_file.close()
 
@@ -228,7 +274,7 @@ def SuccessfulNotification():
         print("All audios were downloaded \n")
         toaster.show_toast("YouTube Downloader", "All videos were downloaded!", duration=0,
                            icon_path=icon_path)
-        time.sleep(2)
+        time.sleep(3)
 
         os.system('cls')
     except Exception:
@@ -246,13 +292,15 @@ def DownloadMP3FromYouTube(video_url, folder_name="random", modify_volume=0):
     :return:
     """
     i = 1
+    audio_video_youtube = None
     while i < 10:
         try:
             audio_video_youtube = YouTube(
                 video_url).streams.filter(
-                progressive=False).filter(only_audio=True).get_audio_only()
-        except Exception:
+                progressive=False, only_audio=True).get_audio_only()
+        except Exception as error:
             i = i + 1
+            print(error)
             continue
         break
 
@@ -285,17 +333,20 @@ def DownloadMP3FromYouTube(video_url, folder_name="random", modify_volume=0):
 
         download_log.close()
 
-        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}.mp4")
+        audio_video_youtube.download(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}", filename=f"{audio_title}_temp.mp3")
 
         subprocess.call(
-            [f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4", "-filter:a",
+            [f"{ffmpeg_path}", "-y", "-i", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}_temp.mp3", "-filter:a",
              f"volume={modify_volume}dB", "-c:a",
-             "libmp3lame", "-b:a", "256k", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
+             "libmp3lame", "-b:a", f"{AUDIO_BITRATE}", f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp3"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT
         )
 
-        os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}.mp4")
+        try:
+            os.remove(f"{DOWNLOAD_DIR}\\mp3\\{folder_name}\\{audio_title}_temp.mp3")
+        except Exception:
+            pass
 
         if not_in_log == 1 and SKIP_LOG_WRITING == 0:
             download_log = open(DOWNLOAD_DIR_AUDIO_LOG, "a", encoding="UTF-8")
