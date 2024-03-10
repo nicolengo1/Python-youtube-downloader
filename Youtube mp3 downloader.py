@@ -300,7 +300,6 @@ def DownloadMP3FromYouTube(video_url, folder_name="random", modify_volume=0):
                 progressive=False, only_audio=True).get_audio_only()
         except Exception as error:
             i = i + 1
-            print(error)
             continue
         break
 

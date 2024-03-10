@@ -336,7 +336,6 @@ def DownloadMP4FromYouTube(video_url, folder_name="random", modify_volume=0):
     the "DOWNLOAD_DIR" path.
     :return:
     """
-
     i = 1
     audio_video_youtube = None
     video_youtube = None
@@ -351,7 +350,6 @@ def DownloadMP4FromYouTube(video_url, folder_name="random", modify_volume=0):
                 get_highest_resolution(VIDEO_MAX_RESOLUTION)
         except Exception as error:
             i = i + 1
-            print(error)
             continue
         break
 
